@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicos</title>
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+    <div id="app">
+        <h1>{{message}}</h1>
+        <br />
+        <button class="btn btn-primary" @click="nuevo()">Nuevo</button>
+        <table> 
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Tipo de agenda</th>
+                    <th>Descripcion</th>
+                    <th>Fecha inicio</th>
+                    <th>Fecha fin</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="agenda in agendas" :key="agenda.agenda_id">
+                    <td>{{agenda.agenda_id}}</td>
+                    <td>{{agenda.descripcion}}</td>
+                    <td>{{agenda.agenda_descripcion}}</td>
+                    <td>{{agenda.fecha_inicio}}</td>
+                    <td>{{agenda.fecha_fin}}</td>
+                    <td><button @click="seleccionar(agenda)">Editar</button></td>
+                    <td><button @click="seleccionarConfirmar(agenda)">Eliminar</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="contenedor" v-if="modalNuevo">
+            <div class="modalcontenedor">
+                <input type="text" name="agenda_id" id="agenda_id" placeholder="Id" v-model="agenda.agenda_id" readonly>
+                <br>
+                <select v-model="selected" name="tipoagenda_id" id="tipoagenda_id">
+                    <option v-for="option in tipoagendas" :value="option.tipoagenda_id">
+                      {{ option.descripcion}}
+                    </option>
+                  </select>
+                  <br>
+                <input type="text" name="agenda_descripcion" id="agenda_descripcion" placeholder="Descripcion" v-model="agenda.agenda_descripcion">
+                <br>
+                <input type="date" name="fecha_inicio" id="fecha_inicio" placeholder="Fecha inicio" v-model="agenda.fecha_inicio">
+                <br>
+                <input type="date" name="fecha_fin" id="fecha_fin" placeholder="Fecha inicio" v-model="agenda.fecha_fin">
+                <br>
+                <button @click="modalNuevo=false;guardar()">Guardar</button>
+                <button @click="modalNuevo=false">Cancelar</button>
+            </div>
+        </div>
+        <div class="contenedor" v-if="modalConfirmar">
+            <div class="modalcontenedor">
+                <p>{{agenda.agenda_descripcion}}</p>
+                <button @click="modalConfirmar=false;eliminar()">Eliminar</button>
+                <button @click="modalConfirmar=false">Cancelar</button>
+            </div>
+        </div>
+
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
